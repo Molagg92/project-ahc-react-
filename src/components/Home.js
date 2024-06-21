@@ -1,26 +1,12 @@
-import React, { useState } from 'react';
-import Client from '../components/client/Client';
+import React from 'react';
 
-function Home() {
-  const [currentPage, setCurrentPage] = useState('home');
-
-  const renderPage = () => {
-    if (currentPage === 'home') {
-      return (
-        <div>
-          <h1>Home Page!</h1>
-          <button onClick={() => setCurrentPage('client')}> Go To Client Page</button>
-        </div>
-      )
-    } else if (currentPage === 'client'){
-      return <Client goBack={() => setCurrentPage('home')} />
-    }
-  }
+function Home({ navigate }) {
   return (
-    <>
-    {renderPage()}
-    </>
-  );
+    <div>
+      <h1>Home Page!</h1>
+      <button onClick={navigate}> Go To Client Page</button>
+    </div>
+  )
 }
 
 export default Home;
