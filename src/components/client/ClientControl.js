@@ -26,9 +26,15 @@ function ClientControl({ navigateHome  }) {
     getClientList();
   }, []);
 
+  const addClient = (newClient) => {
+    setClientList((prevList) => [...prevList, newClient]);
+  }
+
   const renderOperationPage = () => {
     if (currentOperation === 'create') {
-      return <CreateClient goBack={() => setCurrentOperation('control')} />
+      return <CreateClient
+              goBack={() => setCurrentOperation('control')}
+              addClient={addClient} />
     }
     return (
       <div>
