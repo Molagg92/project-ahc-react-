@@ -13,7 +13,7 @@ function Home() {
         </div>
       )
     } else if (currentPage === 'client'){
-      return <Client />
+      return <Client goBack={() => setCurrentPage('home')} />
     }
   }
   return (

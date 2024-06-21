@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { db } from '../../config/firebase';
 import{ getDocs, collection, addDoc } from 'firebase/firestore';
 
-function Client() {
+function Client({ goBack }) {
   const [clientList, setClientList] = useState([]);
   const [newClientName,setNewClientName ] = useState("");
 
@@ -40,6 +40,7 @@ function Client() {
   return(
   <div>
    <div>
+    <h2>Client Page</h2>
     <input
       placeholder="Name?"
       onChange={(e) => setNewClientName(e.target.value)}
@@ -48,9 +49,10 @@ function Client() {
     </div>
       {clientList.map((client) => (
         <div key={client.id}>
-          <h1>{client.name}</h1>
+          <p>{client.name}</p>
         </div>
       ))}
+    <button onClick={goBack}>Go Back to Home</button>
     </div>
   );
 }
