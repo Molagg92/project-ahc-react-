@@ -38,19 +38,20 @@ function Client() {
   };
 
   return(
+  <div>
    <div>
-    {/* Form to Add New Client */}
-    <form onSubmit={onClientSubmit}>
-    <input type="text" value={newClientName} onChange={(e) => setNewClientName(e.target.value)} placeholder="Enter client name" />
-    <button type="submit">Add Client</button>
-    </form>
-    {/*  List of clients! */}
-    <ul>
+    <input
+      placeholder="Name?"
+      onChange={(e) => setNewClientName(e.target.value)}
+    />
+    <button onClick={onClientSubmit}> Submit Client </button>
+    </div>
       {clientList.map((client) => (
-        <li key={client.id}>{client.name}</li>
+        <div key={client.id}>
+          <h1>{client.name}</h1>
+        </div>
       ))}
-    </ul>
-   </div>
+    </div>
   );
 }
 
