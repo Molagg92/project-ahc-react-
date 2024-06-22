@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import CreateClient from './CreateClient';
-import{ getDocs, collection } from 'firebase/firestore';
-import { db } from '../../config/firebase'
+import ClientDetails from './ClientDetails';
+import{ getDocs, collection, doc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 
 function ClientControl({ navigateHome  }) {
   const [currentOperation, setCurrentOperation] = useState('control')
   const [clientList, setClientList] = useState([]);
+  const [selectedClient, setSelectedClient] = useState(null);
 
   const clientCollectionRef = collection(db, 'client');
 
@@ -34,7 +36,14 @@ function ClientControl({ navigateHome  }) {
     if (currentOperation === 'create') {
       return <CreateClient
               goBack={() => setCurrentOperation('control')}
-              addClient={addClient} />
+              addClient={addClient}
+             />
+    }
+    if (currentOperation === 'details') {
+      return <ClientDetails 
+              clientId={selectedClient.id} 
+              goBack={() => setCurrentOperation('control')} 
+             />
     }
     return (
       <div>
@@ -44,6 +53,7 @@ function ClientControl({ navigateHome  }) {
         {clientList.map((client) => (
           <div key={client.id}>
           <p>{client.name}</p>
+          <button onClick={() => { setSelectedClient(client); setCurrentOperation('details'); }}>Details</button>
           </div>
       ))}
       </div>
