@@ -34,7 +34,9 @@ function ClientDetails({ clientId, goBack }) {
     <div>
       <h2>Client Details Page</h2>
       <p>Name: {clientDetails.name}</p>
-      {/* Additional fields will go here */}
+      <p>Phone: {clientDetails.phoneNumber}</p>
+      <p>Address: {clientDetails.homeAddress}</p>
+      <p>Email: {clientDetails.email}</p>
       <button onClick={goBack}>Go Back</button>
     </div>
   );

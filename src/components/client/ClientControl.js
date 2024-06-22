@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CreateClient from './CreateClient';
 import ClientDetails from './ClientDetails';
-import{ getDocs, collection, doc } from 'firebase/firestore';
+import{ getDocs, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 function ClientControl({ navigateHome  }) {
@@ -53,6 +53,7 @@ function ClientControl({ navigateHome  }) {
         {clientList.map((client) => (
           <div key={client.id}>
           <p>{client.name}</p>
+          <p>{client.phoneNumber}</p>
           <button onClick={() => { setSelectedClient(client); setCurrentOperation('details'); }}>Details</button>
           </div>
       ))}
