@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
-function ClientDetails({ clientId, goBack }) {
+function ClientDetails({ clientId, goBack, goToDelete }) {
   const [clientDetails, setClientDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +38,7 @@ function ClientDetails({ clientId, goBack }) {
       <p>Address: {clientDetails.homeAddress}</p>
       <p>Email: {clientDetails.email}</p>
       <button onClick={goBack}>Go Back</button>
+      <button onClick={goToDelete}>Delete Client</button>
     </div>
   );
 }

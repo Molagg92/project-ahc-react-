@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import CreateClient from './CreateClient';
+import DeleteClient from './DeleteClient';
 import ClientDetails from './ClientDetails';
 import{ getDocs, collection } from 'firebase/firestore';
 import { db } from '../../config/firebase';
+
 
 function ClientControl({ navigateHome  }) {
   const [currentOperation, setCurrentOperation] = useState('control')
@@ -30,7 +32,15 @@ function ClientControl({ navigateHome  }) {
 
   const addClient = (newClient) => {
     setClientList((prevList) => [...prevList, newClient]);
-  }
+  };
+
+  const removeClient = (clientId) => {
+    setClientList((prevList) => prevList.filter(client => client.id !== clientId));
+  };
+
+  const goToDelete = () => {
+    setCurrentOperation('delete');
+  };
 
   const renderOperationPage = () => {
     if (currentOperation === 'create') {
@@ -43,7 +53,17 @@ function ClientControl({ navigateHome  }) {
       return <ClientDetails 
               clientId={selectedClient.id} 
               goBack={() => setCurrentOperation('control')} 
+              goToDelete={goToDelete}
              />
+    }
+    if (currentOperation === 'delete') {
+      return (
+        <DeleteClient
+          clientId={selectedClient.id}
+          goBack={() => setCurrentOperation('control')}
+          removeClient={removeClient}
+        />
+      );
     }
     return (
       <div>
@@ -52,7 +72,7 @@ function ClientControl({ navigateHome  }) {
         <button onClick={navigateHome}>Go Back to Home</button>
         {clientList.map((client) => (
           <div key={client.id}>
-          <p>{client.name}</p>
+          <b>{client.name}</b>
           <p>{client.phoneNumber}</p>
           <button onClick={() => { setSelectedClient(client); setCurrentOperation('details'); }}>Details</button>
           </div>
