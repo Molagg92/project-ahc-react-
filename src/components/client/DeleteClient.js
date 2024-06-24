@@ -2,7 +2,7 @@ import React from "react";
 import { doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
-function DeleteClient({ clientId, goBack, removeClient }) {
+function DeleteClient({ clientId, clientName, goBack, removeClient }) {
   const handleDelete = async () => {
     const clientDocRef = doc(db, "client", clientId);
     try {
@@ -17,7 +17,7 @@ function DeleteClient({ clientId, goBack, removeClient }) {
   return (
     <>
       <h2> Delete Client </h2>
-      <p>Are you sure you want to delete this client?</p>
+      <p>Are you sure you want to delete this client, {clientName}?</p>
       <button onClick={handleDelete}> Yes, Delete Client</button>
       <button onClick={goBack}>No, Go Back</button>
     </>

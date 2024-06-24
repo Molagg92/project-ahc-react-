@@ -38,7 +38,8 @@ function ClientControl({ navigateHome  }) {
     setClientList((prevList) => prevList.filter(client => client.id !== clientId));
   };
 
-  const goToDelete = () => {
+  const goToDelete = (client) => {
+    setSelectedClient(client);
     setCurrentOperation('delete');
   };
 
@@ -53,13 +54,14 @@ function ClientControl({ navigateHome  }) {
       return <ClientDetails 
               clientId={selectedClient.id} 
               goBack={() => setCurrentOperation('control')} 
-              goToDelete={goToDelete}
+              goToDelete={() => goToDelete(selectedClient)}
              />
     }
     if (currentOperation === 'delete') {
       return (
         <DeleteClient
           clientId={selectedClient.id}
+          clientName={selectedClient.name}
           goBack={() => setCurrentOperation('control')}
           removeClient={removeClient}
         />
