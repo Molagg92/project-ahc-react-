@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import EditClient from "./EditClient";
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
-function ClientDetails({ clientId, goBack, goToDelete }) {
+function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
   const [clientDetails, setClientDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -39,6 +40,7 @@ function ClientDetails({ clientId, goBack, goToDelete }) {
       <p>Email: {clientDetails.email}</p>
       <button onClick={goBack}>Go Back</button>
       <button onClick={goToDelete}>Delete Client</button>
+      <button onClick={goToUpdate}>Update Client</button>
     </div>
   );
 }

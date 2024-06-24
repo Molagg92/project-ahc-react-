@@ -17,7 +17,7 @@ function DeleteClient({ clientId, clientName, goBack, removeClient }) {
   return (
     <>
       <h2> Delete Client </h2>
-      <p>Are you sure you want to delete this client, {clientName}?</p>
+      <p>Are you sure you want to delete the client, <b>{clientName}</b>?</p>
       <button onClick={handleDelete}> Yes, Delete Client</button>
       <button onClick={goBack}>No, Go Back</button>
     </>

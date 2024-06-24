@@ -1,8 +1,10 @@
+// Client Control
 import React, { useState, useEffect } from 'react';
 import CreateClient from './CreateClient';
+import EditClient from './EditClient';
 import DeleteClient from './DeleteClient';
 import ClientDetails from './ClientDetails';
-import{ getDocs, collection } from 'firebase/firestore';
+import{ getDocs, collection, doc,  updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 
@@ -16,11 +18,11 @@ function ClientControl({ navigateHome  }) {
   const getClientList = async () => {
     try {
       const data = await getDocs(clientCollectionRef);
-      const specifitData = data.docs.map((doc) => ({
+      const specificData = data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
-      setClientList(specifitData);
+      setClientList(specificData);
     } catch (err) {
       console.error(err);
     }
@@ -32,6 +34,22 @@ function ClientControl({ navigateHome  }) {
 
   const addClient = (newClient) => {
     setClientList((prevList) => [...prevList, newClient]);
+  };
+
+  const updateClient = async (clientId, updatedClientData) => {
+    try {
+      const clientDocRef = doc(db,'client', clientId );
+      await updateDoc(clientDocRef, updatedClientData);
+      getClientList();
+      setCurrentOperation('details');
+    } catch (err) {
+      console.error('Error updateding client: ', err);
+    }
+  };
+
+  const goToUpdate = (client) => {
+    setSelectedClient(client);
+    setCurrentOperation('update');
   };
 
   const removeClient = (clientId) => {
@@ -55,7 +73,23 @@ function ClientControl({ navigateHome  }) {
               clientId={selectedClient.id} 
               goBack={() => setCurrentOperation('control')} 
               goToDelete={() => goToDelete(selectedClient)}
+              goToUpdate={() => setCurrentOperation('update')}
              />
+    }
+    if (currentOperation === 'update') {
+      return (
+        // <ReusableForm
+        //   initialData={selectedClient}
+        //   handleSubmit={(updatedClient) => updateClient(selectedClient.id, updatedClient)}
+        //   buttonLabel="Update Client"
+        //   goBack={() => setCurrentOperation('control')}
+        // />
+        <EditClient
+        clientData={selectedClient}
+        goBack={() => setCurrentOperation('details')}
+        updateClient={updateClient}
+      />
+      );
     }
     if (currentOperation === 'delete') {
       return (
