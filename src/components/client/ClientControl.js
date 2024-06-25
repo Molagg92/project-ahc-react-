@@ -1,11 +1,12 @@
 // Client Control
 import React, { useState, useEffect } from 'react';
+import{ getDocs, collection, doc,  updateDoc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 import CreateClient from './CreateClient';
 import EditClient from './EditClient';
 import DeleteClient from './DeleteClient';
 import ClientDetails from './ClientDetails';
-import{ getDocs, collection, doc,  updateDoc } from 'firebase/firestore';
-import { db } from '../../config/firebase';
+
 
 
 function ClientControl({ navigateHome  }) {
