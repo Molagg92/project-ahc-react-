@@ -1,11 +1,12 @@
 import React from 'react';
 
-function Home({ navigate }) {
+function Home({ navigateClientControl, navigateServiceControl }) {
   return (
     <div>
       <h1>Home Page!</h1>
-      <button onClick={navigate}> Go To Client Page</button>
-      <button onClick={navigate}> Go To Service Page</button>
+      <button onClick={navigateClientControl}> Go To Client Page</button>
+      <br />
+      <button onClick={navigateServiceControl}> Go To Service Page</button>
     </div>
   )
 }

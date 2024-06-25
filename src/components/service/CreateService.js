@@ -40,15 +40,17 @@ function CreateService({ goBack, addService }) {
         onChange={(e) => setNewServiceAddress(e.target.value)}
       />
       <input
-          type="checkbox"
-          checked={isDeepCleaning}
-          onChange={(e) => setIsDeepCleaning(e.target.checked)}
-        />
-      <input
         placeholder="Date and Time"
         value={newServiceDateTime}
         onChange={(e) => setNewServiceDateTime(e.target.value)}
       />
+      <div>
+        <p>Deep Cleaning?</p> <input
+                                  type="checkbox"
+                                  checked={isServiceDeepClean}
+                                  onChange={(e) => setIsServiceDeepClean(e.target.checked)}
+                                />
+      </div>  
       <br></br>
       <button onClick={onServiceSubmit}> Submit Service </button>
       <button onClick={goBack}>Go Back</button>

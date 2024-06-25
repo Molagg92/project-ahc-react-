@@ -4,7 +4,7 @@ import { db } from '../../config/firebase';
 import CreateService from './CreateService';
 
 function ServiceControl({ navigateHome }) {
-  const [currentOperation, setCurrentOperation] = useState('control');
+  const [currentOperation, setCurrentOperation] = useState('serviceControl');
   const [serviceList, setServiceList] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
 
@@ -28,28 +28,28 @@ function ServiceControl({ navigateHome }) {
   }, []);
 
   const addService = (newService) => {
-    setServiceList((prevList) => [...prevList, newClient]);
+    setServiceList((prevList) => [...prevList, newService]);
   };
 
 
   // RENDER OPERATION FUNCTION
   const renderOperationPage = () => {
-    if (currentOperation === 'create') {
+    if (currentOperation === 'serviceCreate') {
       return <CreateService
-              goBack={() => setCurrentOperation('control')}
+              goBack={() => setCurrentOperation('serviceControl')}
               addService={addService}
             />
     }
     return (
       <div>
         <h2> Service Control Page</h2>
-        <button onClick={() => setCurrentOperation('create')}>Create Service</button>
+        <button onClick={() => setCurrentOperation('serviceCreate')}>Create Service</button>
         <button onClick={navigateHome}>Go Back to Home</button>
         {serviceList.map((service) => (
           <div key={service.id}>
           <b>{service.name}</b>
           <p>{service.phoneNumber}</p>
-          {/* <button onClick={() => { setSelectedService(service); setCurrentOperation('details'); }}>Details</button> */}
+          {/* <button onClick={() => { setSelectedService(service); setCurrentOperation('serviceDetails'); }}>Details</button> */}
           </div>
       ))}
       </div>
