@@ -5,6 +5,7 @@ function Home({ navigate }) {
     <div>
       <h1>Home Page!</h1>
       <button onClick={navigate}> Go To Client Page</button>
+      <button onClick={navigate}> Go To Service Page</button>
     </div>
   )
 }

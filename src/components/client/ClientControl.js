@@ -10,7 +10,7 @@ import ClientDetails from './ClientDetails';
 
 
 function ClientControl({ navigateHome  }) {
-  const [currentOperation, setCurrentOperation] = useState('control')
+  const [currentOperation, setCurrentOperation] = useState('clientControl')
   const [clientList, setClientList] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
 
@@ -42,7 +42,7 @@ function ClientControl({ navigateHome  }) {
       const clientDocRef = doc(db,'client', clientId );
       await updateDoc(clientDocRef, updatedClientData);
       getClientList();
-      setCurrentOperation('details');
+      setCurrentOperation('clientDetails');
     } catch (err) {
       console.error('Error updateding client: ', err);
     }
@@ -50,7 +50,7 @@ function ClientControl({ navigateHome  }) {
 
   const goToUpdate = (client) => {
     setSelectedClient(client);
-    setCurrentOperation('update');
+    setCurrentOperation('clientEdit');
   };
 
   const removeClient = (clientId) => {
@@ -59,45 +59,39 @@ function ClientControl({ navigateHome  }) {
 
   const goToDelete = (client) => {
     setSelectedClient(client);
-    setCurrentOperation('delete');
+    setCurrentOperation('clientDelete');
   };
 
   const renderOperationPage = () => {
-    if (currentOperation === 'create') {
+    if (currentOperation === 'clientCreate') {
       return <CreateClient
-              goBack={() => setCurrentOperation('control')}
+              goBack={() => setCurrentOperation('clientControl')}
               addClient={addClient}
              />
     }
-    if (currentOperation === 'details') {
+    if (currentOperation === 'clientDetails') {
       return <ClientDetails 
               clientId={selectedClient.id} 
-              goBack={() => setCurrentOperation('control')} 
+              goBack={() => setCurrentOperation('clientControl')} 
               goToDelete={() => goToDelete(selectedClient)}
-              goToUpdate={() => setCurrentOperation('update')}
+              goToUpdate={() => setCurrentOperation('clientEdit')}
              />
     }
-    if (currentOperation === 'update') {
+    if (currentOperation === 'clientEdit') {
       return (
-        // <ReusableForm
-        //   initialData={selectedClient}
-        //   handleSubmit={(updatedClient) => updateClient(selectedClient.id, updatedClient)}
-        //   buttonLabel="Update Client"
-        //   goBack={() => setCurrentOperation('control')}
-        // />
         <EditClient
         clientData={selectedClient}
-        goBack={() => setCurrentOperation('details')}
+        goBack={() => setCurrentOperation('clientDetails')}
         updateClient={updateClient}
       />
       );
     }
-    if (currentOperation === 'delete') {
+    if (currentOperation === 'clientDelete') {
       return (
         <DeleteClient
           clientId={selectedClient.id}
           clientName={selectedClient.name}
-          goBack={() => setCurrentOperation('control')}
+          goBack={() => setCurrentOperation('clientControl')}
           removeClient={removeClient}
         />
       );
@@ -105,13 +99,13 @@ function ClientControl({ navigateHome  }) {
     return (
       <div>
         <h2> Client Control Page</h2>
-        <button onClick={() => setCurrentOperation('create')}>Create Client</button>
+        <button onClick={() => setCurrentOperation('clientCreate')}>Create Client</button>
         <button onClick={navigateHome}>Go Back to Home</button>
         {clientList.map((client) => (
           <div key={client.id}>
           <b>{client.name}</b>
           <p>{client.phoneNumber}</p>
-          <button onClick={() => { setSelectedClient(client); setCurrentOperation('details'); }}>Details</button>
+          <button onClick={() => { setSelectedClient(client); setCurrentOperation('clientDetails'); }}>Details</button>
           </div>
       ))}
       </div>

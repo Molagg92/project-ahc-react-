@@ -12,8 +12,8 @@ function App() {
 
   const renderPage = () => {
     if (currentPage === 'home') {
-      return <Home navigate={() => setCurrentPage('control')} />;
-    } else if (currentPage === 'control'){
+      return <Home navigate={() => setCurrentPage('clientControl')} />;
+    } else if (currentPage === 'clientControl'){
       return <ClientControl navigateHome={navigateHome} />
     }
   }
