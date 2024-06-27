@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import EditClient from "./EditClient";
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 

@@ -25,6 +25,7 @@ function CreateService({ goBack, addService }) {
       setNewServiceAddress("");
       setIsServiceDeepClean(false);
       setNewServiceDateTime("");
+      goBack();
     } catch (err){
       console.error(err);
     }

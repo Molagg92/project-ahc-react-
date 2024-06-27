@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import{ getDocs, collection, doc,  updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import CreateService from './CreateService';
+import DeleteService from './DeleteService';
+import ServiceDetails from './ServiceDetails';
 
 function ServiceControl({ navigateHome }) {
   const [currentOperation, setCurrentOperation] = useState('serviceControl');
@@ -31,6 +33,14 @@ function ServiceControl({ navigateHome }) {
     setServiceList((prevList) => [...prevList, newService]);
   };
 
+  const removeService = (serviceId) => {
+    setServiceList((prevList) => prevList.filter(service => service.id !== serviceId));
+  };
+
+  const goToDelete = (service) => {
+    setSelectedService(service);
+    setCurrentOperation('serviceDelete')
+  }
 
   // RENDER OPERATION FUNCTION
   const renderOperationPage = () => {
@@ -40,6 +50,24 @@ function ServiceControl({ navigateHome }) {
               addService={addService}
             />
     }
+    if (currentOperation === 'serviceDelete') {
+      return (
+        <DeleteService 
+          serviceId={selectedService.id}
+          serviceDateTime={selectedService.dateTime}
+          goBack={() => setCurrentOperation('serviceControl')}
+          removeService={removeService}
+        />
+      )
+    }
+    if (currentOperation === 'serviceDetails') {
+      return <ServiceDetails
+              serviceId={selectedService.id}
+              goBack={() => setCurrentOperation('serviceControl')}
+              goToDelete={() => goToDelete(selectedService)}s
+              // goToUpdate={() => setCurrentOperation('serviceEdit')}
+            />
+    }
     return (
       <div>
         <h2> Service Control Page</h2>
@@ -47,9 +75,10 @@ function ServiceControl({ navigateHome }) {
         <button onClick={navigateHome}>Go Back to Home</button>
         {serviceList.map((service) => (
           <div key={service.id}>
-          <b>{service.name}</b>
-          <p>{service.phoneNumber}</p>
-          {/* <button onClick={() => { setSelectedService(service); setCurrentOperation('serviceDetails'); }}>Details</button> */}
+          <b>{service.address}</b>
+          <p>{service.dateTime}</p>
+          <p>{service.deepClean}</p>
+          <button onClick={() => { setSelectedService(service); setCurrentOperation('serviceDetails'); }}>Details</button>
           </div>
       ))}
       </div>
