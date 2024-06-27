@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
-function ServiceDetails({ serviceId, goBack, goToDelete }) {
+function ServiceDetails({ serviceId, goBack, goToDelete, goToUpdate }) {
   const [serviceDetails, setServiceDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -35,10 +35,10 @@ function ServiceDetails({ serviceId, goBack, goToDelete }) {
       <h2>Service Details Page</h2>
       <p>Date and Time: {serviceDetails.dateTime}</p>
       <p>Address: {serviceDetails.address}</p>
-      <p>Deep Clean: {serviceDetails.deepClean}</p>
+      <p>Deep Clean: {serviceDetails.deepClean ? "Yes" : "No"}</p>
       <button onClick={goBack}>Go Back</button>
       <button onClick={goToDelete}>Delete Service</button>
-      {/* <button onClick={goToUpdate}>Update Service</button> */}
+      <button onClick={goToUpdate}>Update Service</button>
     </div>
   );
 }

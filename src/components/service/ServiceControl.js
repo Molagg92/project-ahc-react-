@@ -4,6 +4,7 @@ import { db } from '../../config/firebase';
 import CreateService from './CreateService';
 import DeleteService from './DeleteService';
 import ServiceDetails from './ServiceDetails';
+import EditService from '../service/EditService';
 
 function ServiceControl({ navigateHome }) {
   const [currentOperation, setCurrentOperation] = useState('serviceControl');
@@ -42,6 +43,22 @@ function ServiceControl({ navigateHome }) {
     setCurrentOperation('serviceDelete')
   }
 
+  const updateService = async (serviceId, updatedServiceData) => {
+    try {
+      const serviceDocRef = doc(db,'service', serviceId );
+      await updateDoc(serviceDocRef, updatedServiceData);
+      getServiceList();
+      setCurrentOperation('serviceDetails');
+    } catch (err) {
+      console.error('Error updateding service: ', err);
+    }
+  };
+
+  const goToUpdate = (service) => {
+    setSelectedService(service);
+    setCurrentOperation('serviceEdit');
+  };
+
   // RENDER OPERATION FUNCTION
   const renderOperationPage = () => {
     if (currentOperation === 'serviceCreate') {
@@ -65,8 +82,17 @@ function ServiceControl({ navigateHome }) {
               serviceId={selectedService.id}
               goBack={() => setCurrentOperation('serviceControl')}
               goToDelete={() => goToDelete(selectedService)}s
-              // goToUpdate={() => setCurrentOperation('serviceEdit')}
+              goToUpdate={() => setCurrentOperation('serviceEdit')}
             />
+    }
+    if (currentOperation === 'serviceEdit') {
+      return (
+        <EditService
+        serviceData={selectedService}
+        goBack={() => setCurrentOperation('serviceDetails')}
+        updateService={updateService}
+      />
+      );
     }
     return (
       <div>
@@ -77,7 +103,6 @@ function ServiceControl({ navigateHome }) {
           <div key={service.id}>
           <b>{service.address}</b>
           <p>{service.dateTime}</p>
-          <p>{service.deepClean}</p>
           <button onClick={() => { setSelectedService(service); setCurrentOperation('serviceDetails'); }}>Details</button>
           </div>
       ))}
