@@ -5,14 +5,13 @@ import { db } from '../../config/firebase';
 function ReusableForm({ initialData, handleSubmit, buttonLabel }) {
   const [formData, setFormData] = useState(initialData);
 
-  const handleChange = (e) => {
-    const {name, value } = e.target;
+ const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     try{
