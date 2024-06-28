@@ -3,6 +3,7 @@ import{ getDocs, collection, doc,  updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import CreateEmployee from "./CreateEmployee";
 import EmployeeDetails from "./EmployeeDetails";
+import DeleteEmployee from "./DeleteEmployee";
 
 function EmployeeControl({ navigateHome  }) {
   const [currentOperation, setCurrentOperation] = useState('employeeControl');
@@ -32,6 +33,15 @@ function EmployeeControl({ navigateHome  }) {
     setEmployeeList((prevList) => [...prevList, newEmployee]);
   };
 
+  const removeEmployee = (employeeId) => {
+    setEmployeeList((prevList) => prevList.filter(employee => employee.id !== employeeId));
+  };
+
+  const goToDelete = (employee) => {
+    setSelectedEmployee(employee);
+    setCurrentOperation('employeeDelete');
+  };
+
   const renderOperationPage = () => {
     if (currentOperation === 'employeeCreate') {
       return <CreateEmployee
@@ -43,9 +53,19 @@ function EmployeeControl({ navigateHome  }) {
       return <EmployeeDetails 
               employeeId={selectedEmployee.id} 
               goBack={() => setCurrentOperation('employeeControl')} 
-              // goToDelete={() => goToDelete(selectedEmployee)}
+              goToDelete={() => goToDelete(selectedEmployee)}
               goToUpdate={() => setCurrentOperation('employeeEdit')}
              />
+    }
+    if (currentOperation === 'employeeDelete') {
+      return (
+        <DeleteEmployee
+          employeeId={selectedEmployee.id}
+          employeeName={selectedEmployee.name}
+          goBack={() => setCurrentOperation('employeeControl')}
+          removeEmployee={removeEmployee}
+        />
+      );
     }
 
   return (
