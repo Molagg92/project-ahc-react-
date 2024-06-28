@@ -4,6 +4,7 @@ import { db } from '../../config/firebase';
 import CreateEmployee from "./CreateEmployee";
 import EmployeeDetails from "./EmployeeDetails";
 import DeleteEmployee from "./DeleteEmployee";
+import EditEmployee from "./EditEmployee";
 
 function EmployeeControl({ navigateHome  }) {
   const [currentOperation, setCurrentOperation] = useState('employeeControl');
@@ -42,6 +43,22 @@ function EmployeeControl({ navigateHome  }) {
     setCurrentOperation('employeeDelete');
   };
 
+  const updateEmployee = async (employeeId, updatedEmployeeData) => {
+    try {
+      const employeeDocRef = doc(db,'employee', employeeId );
+      await updateDoc(employeeDocRef, updatedEmployeeData);
+      getEmployeeList();
+      setCurrentOperation('employeeDetails');
+    } catch (err) {
+      console.error('Error updateding employee: ', err);
+    }
+  };
+
+  const goToUpdate = (employee) => {
+    setSelectedEmployee(employee);
+    setCurrentOperation('employeeEdit');
+  };
+
   const renderOperationPage = () => {
     if (currentOperation === 'employeeCreate') {
       return <CreateEmployee
@@ -65,6 +82,15 @@ function EmployeeControl({ navigateHome  }) {
           goBack={() => setCurrentOperation('employeeControl')}
           removeEmployee={removeEmployee}
         />
+      );
+    }
+    if (currentOperation === 'employeeEdit') {
+      return (
+        <EditEmployee
+        employeeData={selectedEmployee}
+        goBack={() => setCurrentOperation('employeeDetails')}
+        updateEmployee={updateEmployee}
+      />
       );
     }
 
