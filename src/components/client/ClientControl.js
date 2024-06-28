@@ -7,8 +7,6 @@ import EditClient from './EditClient';
 import DeleteClient from './DeleteClient';
 import ClientDetails from './ClientDetails';
 
-
-
 function ClientControl({ navigateHome  }) {
   const [currentOperation, setCurrentOperation] = useState('clientControl')
   const [clientList, setClientList] = useState([]);
