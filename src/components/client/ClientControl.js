@@ -6,6 +6,8 @@ import CreateClient from './CreateClient';
 import EditClient from './EditClient';
 import DeleteClient from './DeleteClient';
 import ClientDetails from './ClientDetails';
+// import useClientServices from '../../hooks/useClientServices';
+
 
 function ClientControl({ navigateHome  }) {
   const [currentOperation, setCurrentOperation] = useState('clientControl')
@@ -22,8 +24,9 @@ function ClientControl({ navigateHome  }) {
         id: doc.id,
       }));
       setClientList(specificData);
+      console.log("Client List: ", specificData); // Debug Log
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching clients: ", err);
     }
   };
 
@@ -59,6 +62,30 @@ function ClientControl({ navigateHome  }) {
     setSelectedClient(client);
     setCurrentOperation('clientDelete');
   };
+
+  //   //==== JOIN FUNCTINALITY ====//
+  // const joinClientInService = async (clientId, serviceId) => {
+  //   try {
+  //     const joinTableCollectionRef = collection(db, "joinClientService");
+  //     await addDoc(joinTableCollectionRef, {
+  //       clientId: String(clientId),
+  //       serviceId: String(serviceId),
+  //     });
+  //     alert("Client Enrolled in Service!");
+  //   } catch (err) {
+  //     console.error("Error enrolling client: ", err);
+  //   }
+  // };
+
+  // const handleJoin = async (clientId) => {
+  //   if(selectedService) {
+  //     await joinClientInService(clientId, selectedService);
+  //   } else {
+  //     alert("Please Select a Service.");
+  //   }
+  // };
+
+  //======== RENDER FUNCTION ========//
 
   const renderOperationPage = () => {
     if (currentOperation === 'clientCreate') {
