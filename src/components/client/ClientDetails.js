@@ -8,7 +8,8 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState('');
-  const clientServices = useClientServices(clientId);
+  const [clientServices, setClientServices] = useState([]);
+  const fetchedClientServices = useClientServices(clientId);
 
   const getClientDetails = async (id) => {
     const clientDocRef = doc(db, "client", id);
@@ -39,7 +40,7 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
     }
   };
 
-   const joinClientInService = async (clientId, serviceId) => {
+  const joinClientInService = async (clientId, serviceId) => {
     try {
       const joinTableCollectionRef = collection(db, "joinClientService");
       await addDoc(joinTableCollectionRef, {
@@ -47,6 +48,10 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
         serviceId: String(serviceId),
       });
       alert("Client Enrolled in Service!");
+
+      // Manually update client services list after joining
+      const newService = services.find(service => service.id === serviceId);
+      setClientServices(prevServices => [...prevServices, newService]);
     } catch (err) {
       console.error("Error enrolling client: ", err);
     }
@@ -55,7 +60,6 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
   const handleJoin = async () => {
     if (selectedService) {
       await joinClientInService(clientId, selectedService);
-      fetchServices();
     } else {
       alert("Please Select a Service.");
     }
@@ -64,7 +68,8 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
   useEffect(() => {
     getClientDetails(clientId);
     fetchServices();
-  }, [clientId]);
+    setClientServices(fetchedClientServices);
+  }, [clientId, fetchedClientServices]);
 
   if (loading) {
     return <div>Loading...</div>;
