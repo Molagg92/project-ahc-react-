@@ -52,14 +52,14 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
     }
   };
 
-  const handleJoin = async (clientId) => {
-    if(selectedService) {
+  const handleJoin = async () => {
+    if (selectedService) {
       await joinClientInService(clientId, selectedService);
+      fetchServices();
     } else {
       alert("Please Select a Service.");
     }
   };
-
 
   useEffect(() => {
     getClientDetails(clientId);

@@ -9,30 +9,29 @@ const useClientServices = (clientId) => {
     const fetchServices = async () => {
       try {
         const joinCollectionRef = collection(db, 'joinClientService');
-        const servicesCollectionRef = collection(db, 'Service');
+        const servicesCollectionRef = collection(db, 'service');
 
         const enrollmentQuery = query(joinCollectionRef, where('clientId', '==', clientId));
         const enrollmentSnapshot = await getDocs(enrollmentQuery);
         const enrollmentDocs = enrollmentSnapshot.docs.map(doc => doc.data());
-
         const serviceIds = enrollmentDocs.map(enrollment => enrollment.serviceId);
 
         if (serviceIds.length === 0) {
           setServices([]);
           return;
         }
-
         const servicesQuery = query(servicesCollectionRef, where('__name__', 'in', serviceIds));
         const servicesSnapshot = await getDocs(servicesQuery);
         const serviceData = servicesSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-
         setServices(serviceData);
       } catch (err) {
-        console.error("Error fetching Client Services Brother, : ", err);
+        console.error("Error fetching Client Services: ", err);
       }
-    };fetchServices();
+    };
+
+    fetchServices();
   }, [clientId]);
-  
+
   return services;
 };
 
