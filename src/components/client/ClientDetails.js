@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { doc, getDocs, collection, addDoc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import useClientServices from '../../hooks/useClientServices';
 
@@ -26,45 +26,45 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
     }
   };
 
-  const fetchServices = async () => {
-    try {
-      const data = await getDocs(collection(db, 'service'));
-      const specificData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setServices(specificData);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const fetchServices = async () => {
+  //   try {
+  //     const data = await getDocs(collection(db, 'service'));
+  //     const specificData = data.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }));
+  //     setServices(specificData);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
-  const joinClientInService = async (clientId, serviceId) => {
-    try {
-      const joinTableCollectionRef = collection(db, "joinClientService");
-      await addDoc(joinTableCollectionRef, {
-        clientId: String(clientId),
-        serviceId: String(serviceId),
-      });
-      alert("Client Enrolled in Service!");
-      refreshServices();
-    } catch (err) {
-      console.error("Error enrolling client: ", err);
-    }
-  };
+  // const joinClientInService = async (clientId, serviceId) => {
+  //   try {
+  //     const joinTableCollectionRef = collection(db, "joinClientService");
+  //     await addDoc(joinTableCollectionRef, {
+  //       clientId: String(clientId),
+  //       serviceId: String(serviceId),
+  //     });
+  //     alert("Client Enrolled in Service!");
+  //     refreshServices();
+  //   } catch (err) {
+  //     console.error("Error enrolling client: ", err);
+  //   }
+  // };
 
 
-  const handleJoin = async () => {
-    if (selectedService) {
-      await joinClientInService(clientId, selectedService);
-    } else {
-      alert("Please Select a Service.");
-    }
-  };
+  // const handleJoin = async () => {
+  //   if (selectedService) {
+  //     await joinClientInService(clientId, selectedService);
+  //   } else {
+  //     alert("Please Select a Service.");
+  //   }
+  // };
 
   useEffect(() => {
     getClientDetails(clientId);
-    fetchServices();
+    // fetchServices();
   }, [clientId]);
 
   if (loading) {
@@ -82,7 +82,7 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
       <button onClick={goToDelete}>Delete Client</button>
       <button onClick={goToUpdate}>Update Client</button>
       
-      <h3>Assign Service</h3>
+      {/* <h3>Assign Service</h3>
       <select onChange={(e) => setSelectedService(e.target.value)}>
         <option value="">Select a service</option>
         {services.map((service) => (
@@ -91,9 +91,9 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
           </option>
         ))}
       </select>
-      <button onClick={handleJoin}>Assign Service</button>
+      <button onClick={handleJoin}>Assign Service</button> */}
 
-      <h3>Assigned Services</h3>
+      {/* <h3>Assigned Services</h3>
       <ul>
         {clientServices.map((service) => (
           <li key={service.id}>
@@ -101,7 +101,7 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
             <button onClick={() => removeServiceAssignment(service.id)}>Unassign Service</button>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 }
