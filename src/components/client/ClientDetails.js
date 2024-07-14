@@ -8,8 +8,7 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState('');
-  const [clientServices, setClientServices] = useState([]);
-  const fetchedClientServices = useClientServices(clientId);
+  const { services: clientServices, removeServiceAssignment, refreshServices } = useClientServices(clientId);
 
   const getClientDetails = async (id) => {
     const clientDocRef = doc(db, "client", id);
@@ -48,14 +47,12 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
         serviceId: String(serviceId),
       });
       alert("Client Enrolled in Service!");
-
-      // Manually update client services list after joining
-      const newService = services.find(service => service.id === serviceId);
-      setClientServices(prevServices => [...prevServices, newService]);
+      refreshServices();
     } catch (err) {
       console.error("Error enrolling client: ", err);
     }
   };
+
 
   const handleJoin = async () => {
     if (selectedService) {
@@ -68,8 +65,7 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
   useEffect(() => {
     getClientDetails(clientId);
     fetchServices();
-    setClientServices(fetchedClientServices);
-  }, [clientId, fetchedClientServices]);
+  }, [clientId]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -102,6 +98,7 @@ function ClientDetails({ clientId, goBack, goToDelete, goToUpdate }) {
         {clientServices.map((service) => (
           <li key={service.id}>
             {service.address} - {service.dateTime}
+            <button onClick={() => removeServiceAssignment(service.id)}>Unassign Service</button>
           </li>
         ))}
       </ul>
