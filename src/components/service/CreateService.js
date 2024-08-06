@@ -3,7 +3,7 @@ import { useState } from "react";
 import { db } from "../../config/firebase";
 import{ collection, addDoc } from 'firebase/firestore';
 
-function CreateService({ goBack, addService }) {
+function CreateService({ goBack, addService, clientId }) {
   const [newServiceAddress, setNewServiceAddress] = useState("");
   const [isServiceDeepClean, setIsServiceDeepClean] = useState(false);
   const [newServiceDateTime, setNewServiceDateTime] = useState("");
@@ -15,12 +15,14 @@ function CreateService({ goBack, addService }) {
         address: newServiceAddress,
         deepClean: isServiceDeepClean,
         dateTime: newServiceDateTime,
+        clientId: clientId
       });
       addService({
         address: newServiceAddress,
         deepClean: isServiceDeepClean,
         dateTime: newServiceDateTime,
-        id: docRef.id
+        id: docRef.id,
+        clientId: clientId
       });
       setNewServiceAddress("");
       setIsServiceDeepClean(false);
